@@ -2,10 +2,11 @@ module Exercise
   module Arrays
     class << self
       def replace(array)
-        maxValue = array.max
-        res = []
-        array.each {|val| val > 0 ? res << maxValue : res << val}
-        res
+        result = []
+        maxValue = array[0];
+        array.each {|val| maxValue = val if (val > maxValue)}
+        array.each {|val| val > 0 ? result << maxValue : result << val}
+        result
       end
 
       def search(_array, _query)
