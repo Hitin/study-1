@@ -10,10 +10,18 @@ module Exercise
       end
 
       def search(_array, _query)
-      #  res = _array.index(_query)
-      #  res.nil? ? -1 : res
         res = -1; 
-        _array.each_with_index {|val, ind| res = ind if (val == _query)}
+        first = 0
+        last = _array.size - 1
+        interval = last - first
+        while interval > 1 && res == -1 do 
+          middle = (first + last) / 2
+          res = middle if _array[middle] == _query
+          _array[middle] < _query ? first = middle : last = middle
+          interval = last - first
+        end
+        res = last if _array[last] == _query
+        res = first if _array[first] == _query
         res
       end
     end
