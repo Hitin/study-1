@@ -2,28 +2,27 @@ module Exercise
   module Arrays
     class << self
       def replace(array)
-        result = []
-        maxValue = array[0];
-        array.each {|val| maxValue = val if (val > maxValue)}
-        array.each {|val| val > 0 ? result << maxValue : result << val}
-        result
+        max_value = array[0];
+        array.each {|val| max_value = val if (val > max_value)}
+        array.map{|val| val > 0 ? max_value : val}
+        #array.each {|val| max_value = val if (val > max_value)}.map{|val| val > 0 ? max_value : val}
+
       end
 
-      def search(_array, _query)
-        res = -1; 
-        first = 0
-        last = _array.size - 1
+      def search(_array, _query, first = 0, last = _array.size - 1)
         interval = last - first
-        while interval > 1 && res == -1 do 
-          middle = (first + last) / 2
-          res = middle if _array[middle] == _query
-          _array[middle] < _query ? first = middle : last = middle
-          interval = last - first
+        middle = (last + first) / 2
+        return last if _array[last] == _query
+        return first if _array[first] == _query
+        return middle if _array[middle] == _query
+        #return _array[middle] < _query ? self.search(_array, _query, middle, last) : self.search(_array, _query, first, middle) if interval > 1
+        if interval > 1
+          return _array[middle] < _query ? self.search(_array, _query, middle, last) : self.search(_array, _query, first, middle) 
         end
-        res = last if _array[last] == _query
-        res = first if _array[first] == _query
-        res
+        return -1
       end
     end
   end
 end
+
+
