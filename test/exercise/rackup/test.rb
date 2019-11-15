@@ -10,5 +10,9 @@ class RackTest < Test::Unit::TestCase
       browser.get '/hello'
       assert browser.last_response.ok?
       assert_equal 'Hello World', browser.last_response.body
+      browser.post '/hello1', {name: 'Petr'}
+      assert browser.last_response.ok?
+      assert_equal 'Hello World2', browser.last_response.body
+
   end
 end
