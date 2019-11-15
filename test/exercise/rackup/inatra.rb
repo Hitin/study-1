@@ -6,39 +6,33 @@ module Inatra
     end
 
     def call(env)   	
-      puts env
       req = Rack::Request.new(env)
       path_info = req.path_info
-      req_method = req.request_method.downcase.to_sym
-      puts path_info
-      puts req.request_method.downcase.to_sym
-      puts @storage
-      puts '++++++++++++++++++++++++++++++++++++++++++++++'
-      return [404,{},['No']] unless @storage[req_method].key?(path_info)
-      @storage[req_method][path_info].call(env)
-
+      request_method = req.request_method.downcase.to_sym
+      return [404,{},['No']] unless @storage[request_method].key?(path_info)
+      @storage[request_method][path_info].call(env)
     end
 
     def get(path, &block)
-      meth = :get
-      @storage[meth] = {}
-      @storage[meth][path] = block 
+      stor(__method__, path, &block)
     end
 
     def post(path, &block)
-      meth = :post
-      @storage[meth] = {}
-      @storage[meth][path] = block 
+      stor(__method__, path, &block)
     end
 
     def delete(path, &block)
-      @path = path
-      @request = block
+      stor(__method__, path, &block)
     end
 
     def put(path, &block)
-      @path = path
-      @request = block
+      stor(__method__, path, &block)
+    end
+
+    private
+    def stor(meth, path, &block)
+      @storage[meth] = {}
+      @storage[meth][path] = block
     end
 
   end
